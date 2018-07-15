@@ -1,0 +1,176 @@
+#include<iostream>
+using namespace std;
+int ch;
+class node
+{
+	public:
+		int data;
+		node *left,*right;
+};
+class bstree
+{
+	node *root;
+	public:
+		bstree()
+		{
+			root=NULL;
+		}
+		node *r()
+		{
+			return root;
+		}
+		void insert();
+		void search(node *r,int,node*(&i),node*(&p));
+		void preorder(node *ptr);
+		void inorder(node *ptr);
+		void postorder(node *ptr);
+};
+void bstree::insert()
+{
+	node *fresh,*loc,*par=NULL;
+	int item[50],n;
+	cout<<"enter no. of items";
+	cin>>n;
+	for(int i=0;i<n;i++)
+	{
+	cout<<"\nEnter item to be inserted";
+	cin>>item[i];
+	search(root,item[i],loc,par);
+	if(loc!=NULL)
+	{
+		cout<<"\nItem already exists";
+		
+	}
+	else
+	{
+	fresh=new node();
+	fresh->data=item[i];
+	fresh->left=fresh->right=NULL;}
+	if(par==NULL)
+	{
+		root=fresh;
+		
+	}else{
+	if(item[i]<par->data)
+	par->left=fresh;
+	else
+	par->right=fresh;
+	}
+}
+}
+void bstree::search(node *ptr,int item,node*(&loc),node*(&par))
+{
+	if(ptr==NULL)
+	{
+		loc=par=NULL;
+		return;
+	}
+	if(item==ptr->data)
+	{
+		loc=ptr;
+		par=NULL;
+		return ;
+	}
+	node *save;
+	if(item<ptr->data)
+	{
+		save=ptr;
+		ptr=ptr->left;
+	}
+	else
+	{
+		save=ptr;
+		ptr=ptr->right;
+	}
+	while(ptr!=NULL)
+	{
+		if(item==ptr->data)
+		{
+			loc=ptr;
+			par=save;
+			return;
+		}
+		if(item<ptr->data)
+		{
+			save=ptr;
+			ptr=ptr->left;
+		}
+		else
+		{
+		save=ptr;
+		ptr=ptr->right;
+		}
+	}
+loc=NULL;
+par=save;
+return;
+}
+void bstree::inorder(node *ptr)
+{
+	if(ptr==NULL)
+	{
+		cout<<"\nempty tree";
+		return;
+	}
+	if(ptr->left!=NULL)
+	inorder(ptr->left);
+	cout<<"  "<<ptr->data;
+	if(ptr->right!=NULL)
+	inorder(ptr->right);
+}
+void bstree::preorder(node *ptr)
+{
+	if(ptr==NULL)
+	{
+		cout<<"\nempty tree";
+		return;
+	}
+	cout<<"  "<<ptr->data;
+	if(ptr->left!=NULL)
+	preorder(ptr->left);
+	if(ptr->right!=NULL)
+	preorder(ptr->right);
+}
+void bstree::postorder(node *ptr)
+{
+	if(ptr==NULL)
+	{
+		cout<<"\nempty tree";
+		return; 
+	}
+	if(ptr->left!=NULL)
+	postorder(ptr->left);
+	if(ptr->right!=NULL)
+	postorder(ptr->right);
+	cout<<"  "<<ptr->data;
+}
+void menu()
+{
+	cout<<"\n1.insert 2.preoder traverse 3.inorder 4.postorder 5.exit";
+	cout<<"\nenter choice";
+	cin>>ch;
+}	
+int main()
+{
+	bstree bs;
+	menu();
+	while(ch<5)
+	{
+	switch(ch)
+	{
+		case 1:bs.insert();
+			break;
+		case 2: bs.preorder(bs.r());
+			break;
+		case 3: bs.inorder(bs.r());
+			break;
+		case 4: bs.postorder(bs.r());
+			break;
+		
+	}
+	menu();
+	}
+	return 0;
+}
+
+	
